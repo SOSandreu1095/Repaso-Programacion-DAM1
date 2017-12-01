@@ -34,6 +34,8 @@ public class PracticaExamenJumi {
                 + "\t 2) Busqueda dicotómica\n"
                 + "\t 3) Multiplicación de Matrices\n"
                 + "\t 4) Matriz traspuesta\n"
+                + "\t 5) Ordenacion por seleccion\n"
+                + "\t 6) Ordenación burbuja\n"
                 + "\t 0) Salir");
         System.out.print("\t OPCION --> ");
     }
@@ -73,6 +75,17 @@ public class PracticaExamenJumi {
                 int[][] m = {{11, 22, 33}, {44, 55, 66}, {77, 88, 99}, {10, 20, 30}};
                 matrizTraspuesta(m);
                 break;
+            case 5: //Ordenacion seleccion
+                int b[] = {8, 5, 6, 9, 3, 2, 54, 1, 2, 17, 8, 93, 3, 5, 65};
+                imprimirArray(b);
+                ordenacionSeleccion(b);
+                imprimirArray(b);
+                break;
+            case 6: //Ordenacion burbuja
+                int c[] = {8, 5, 6, 9, 3, 2, 54, 1, 2, 17, 8, 93, 3, 5, 65};
+                imprimirArray(c);
+                ordenacionBurbuja(c);
+                imprimirArray(c);
             case 0: //Salir
                 fin = true;
                 break;
@@ -105,6 +118,17 @@ public class PracticaExamenJumi {
         }
     }
 
+    /**
+     * Realiza una busqueda dicotomica dentro de un array, sobre un elemento x
+     * El array debe estar ordenao para que funcione la busqueda
+     *
+     * La estrategia es ir dividiendo el array por la mitad e ir cogiendo la
+     * parte en la que se deberia encontrar nuestro elemento si es mayor o
+     * menor, hasta encontrarlo si existe
+     *
+     * @param a
+     * @param x
+     */
     private static void dicotomica(int[] a, int x) {
         int pmin = 0;
         int pmax = a.length - 1;
@@ -118,7 +142,6 @@ public class PracticaExamenJumi {
             }
             pmed = (pmin + pmax) / 2;
         }
-
         if (a[pmed] == x) {
             System.out.println("Encontrado");
         } else {
@@ -126,6 +149,11 @@ public class PracticaExamenJumi {
         }
     }
 
+    /**
+     * Realiza la trasposición de una determinada matriz
+     *
+     * @param m
+     */
     private static void matrizTraspuesta(int[][] m) {
         //Imprimo la matriz inicial
         imprimirMatriz(m);
@@ -142,16 +170,15 @@ public class PracticaExamenJumi {
         imprimirMatriz(n);
     }
 
-    private static void imprimirMatriz(int[][] m) {
-        System.out.println("\n\n");
-        for (int f = 0; f < m.length; f++) {
-            System.out.println();
-            for (int c = 0; c < m[f].length; c++) {
-                System.out.print(m[f][c] + " ");
-            }
-        }
-    }
-
+    /**
+     * Realiza la multiplicacion (si se puede) de 2 matrices pasadas por
+     * parametros La multiplicacion se puede llevar a cabo si: - El numerdo de
+     * columnas de la matriz 1 = Numero filas matriz 2 La matriz resultante
+     * tendra una dimension de: - Numero de filas m1 , Numero de columnas m2
+     *
+     * @param m1
+     * @param m2
+     */
     private static void multiplicarMatrices(int[][] m1, int[][] m2) {
         System.out.println("Matriz 1");
         imprimirMatriz(m1);
@@ -168,14 +195,88 @@ public class PracticaExamenJumi {
                     for (int x = 0; x < m2.length; x++) {
                         mR[f][c] += m1[f][x] * m2[x][c];
                     }
-
                 }
             }
             imprimirMatriz(mR);
-
         } else {
             System.out.println("Las matrices no pueden ser multiplicadas");
         }
+    }
 
+    /**
+     * Recorre el vector o la lista, buscando el elemento mas pequeño y
+     * colocandolo en la posición 0 del vector, y así sucesivamente n-1 veces,
+     *
+     * @param a
+     */
+    private static void ordenacionSeleccion(int[] a) {
+        int men;
+        int posMen;
+        for (int i = 0; i < a.length - 1; i++) {
+            //Buscamos el elemento mas pequeño
+            men = a[i];
+            posMen = i;
+            for (int x = i + 1; x < a.length; x++) {
+                if (a[x] < men) {
+                    men = a[x];
+                    posMen = x;
+                }
+            }
+            //Hacemos el cambio
+            a[posMen] = a[i];
+            a[i] = men;
+        }
+    }
+
+    /**
+     * Funciona revisando cada elemento de la lista que va a ser ordenada con el
+     * siguiente, intercambiándolos de posición si están en el orden equivocado.
+     * Es necesario revisar varias veces toda la lista hasta que no se necesiten
+     * más intercambios, lo cual significa que la lista está ordenada
+     *
+     * GIF Como funciona:
+     * https://upload.wikimedia.org/wikipedia/commons/c/c8/Bubble-sort-example-300px.gif
+     *
+     * @param a
+     */
+    private static void ordenacionBurbuja(int[] a) {
+        int aux;
+        for (int i = 0; i < a.length - 1; i++) {
+            for (int j = 0; j < a.length - i - 1; j++) {
+                if (a[j + 1] < a[j]) {
+                    //Intercambiarlos
+                    aux = a[j + 1];
+                    a[j + 1] = a[j];
+                    a[j] = aux;
+                }
+            }
+        }
+    }
+
+    /**
+     * Imprime un array bidimensional por consola (Matriz)
+     *
+     * @param m
+     */
+    private static void imprimirMatriz(int[][] m) {
+        System.out.println("\n");
+        for (int f = 0; f < m.length; f++) {
+            System.out.println();
+            for (int c = 0; c < m[f].length; c++) {
+                System.out.print(m[f][c] + " ");
+            }
+        }
+    }
+
+    /**
+     * Imprime un array unidimensional por consola
+     *
+     * @param a
+     */
+    private static void imprimirArray(int a[]) {
+        System.out.println("\n");
+        for (int i = 0; i < a.length; i++) {
+            System.out.print(a[i] + " ");
+        }
     }
 }
