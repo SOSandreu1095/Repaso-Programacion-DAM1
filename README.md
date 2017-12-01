@@ -9,3 +9,5 @@ Ahora mismo cuenta con:
  * Busqueda dicotómica
  * Multiplicación de matrices
  * Matriz traspuesta
+ * Ordenación por selección
+ * Ordenación por burbuja
